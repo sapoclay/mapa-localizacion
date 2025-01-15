@@ -43,14 +43,14 @@ from tkintermapview import TkinterMapView
 from tkinter import messagebox
 import geocoder  
 
-# Función para mostrar la ubicación inicial con un marcador
 def mostrar_ubicacion():
     """Muestra la ubicación inicial (Madrid) en el mapa con un marcador."""
     latitud, longitud = 40.4168, -3.7038  # Coordenadas iniciales (Madrid)
-    map_widget.set_position(latitud, longitud)
-    map_widget.set_zoom(15)
-    map_widget.set_marker(latitud, longitud, text="Ubicación Actual")
-    messagebox.showinfo("Ubicación", "Estás en la calle principal")
+    map_widget.set_position(latitud, longitud)  # Establece la posición inicial del mapa con las coordenadas de Madrid.
+    map_widget.set_zoom(15)  # Configura el zoom del mapa a nivel 15 (detallado).
+    map_widget.set_marker(latitud, longitud, text="Ubicación Actual")  # Coloca un marcador en Madrid con un texto explicativo.
+    messagebox.showinfo("Ubicación", "Estás en la calle principal")  # Muestra un cuadro de mensaje con información sobre la ubicación.
+
 
 # Función para buscar ubicación por coordenadas
 def buscar_ubicacion():
@@ -60,78 +60,74 @@ def buscar_ubicacion():
     Formato esperado: latitud,longitud
     Ejemplo: 40.4168,-3.7038
     """
-    entrada = entrada_busqueda.get()
+    entrada = entrada_busqueda.get()  # Obtiene el valor que el usuario introduce en el campo de entrada de búsqueda.
     try:
         # Separar latitud y longitud ingresadas por el usuario
-        # map() se utiliza para aplicar una función específica a cada elemento de un iterable tuplas, listas...
-        # split divide la cadena entrada en una lista de valores utilizando la coma (,) como delimitador.
-        latitud, longitud = map(float, entrada.split(",")) 
-        map_widget.set_position(latitud, longitud) # Faltaba el set_position
-        map_widget.set_marker(latitud, longitud, text="Ubicación Especificada") # Faltaba el set_marker
-        messagebox.showinfo("Ubicación encontrada", f"Ubicación encontrada: {latitud}, {longitud}")
+        latitud, longitud = map(float, entrada.split(","))  # Divide la cadena de entrada por la coma y convierte las partes a flotantes.
+        map_widget.set_position(latitud, longitud)  # Ajusta la posición del mapa a las coordenadas ingresadas.
+        map_widget.set_marker(latitud, longitud, text="Ubicación Especificada")  # Coloca un marcador en las coordenadas especificadas.
+        messagebox.showinfo("Ubicación encontrada", f"Ubicación encontrada: {latitud}, {longitud}")  # Muestra un mensaje con las coordenadas encontradas.
     except ValueError:
-        messagebox.showerror("Error", "Por favor, introduce coordenadas válidas en el formato: latitud,longitud")
+        messagebox.showerror("Error", "Por favor, introduce coordenadas válidas en el formato: latitud,longitud")  # Si hay un error al convertir las coordenadas, muestra un mensaje de error.
 
-# Función para mostrar la ubicación real del usuario
 def mostrar_ubicacion_real():
     """Obtiene la ubicación actual del usuario y la muestra en el mapa."""
     try:
         # Obtener la ubicación actual utilizando geocoder
-        ubicacion = geocoder.ip("me")  # Obtiene la ubicación basada en la IP local
-        if ubicacion.ok:
-            latitud, longitud = ubicacion.latlng
-            map_widget.set_position(latitud, longitud)
-            map_widget.set_zoom(15)
-            map_widget.set_marker(latitud, longitud, text="Mi IP está en....")
-            messagebox.showinfo("Ubicación", f"Tu IP se sitúa en: {latitud}, {longitud}")
+        ubicacion = geocoder.ip("me")  # Obtiene la ubicación basada en la IP local del usuario.
+        if ubicacion.ok:  # Si la ubicación se obtiene correctamente:
+            latitud, longitud = ubicacion.latlng  # Asigna las coordenadas obtenidas de la ubicación de la IP.
+            map_widget.set_position(latitud, longitud)  # Ajusta el mapa a la ubicación obtenida.
+            map_widget.set_zoom(15)  # Ajusta el zoom para hacer más detallada la vista.
+            map_widget.set_marker(latitud, longitud, text="Mi IP está en....")  # Coloca un marcador en la ubicación obtenida.
+            messagebox.showinfo("Ubicación", f"Tu IP se sitúa en: {latitud}, {longitud}")  # Muestra un mensaje con la ubicación de la IP.
         else:
-            messagebox.showerror("Error", "No se pudo obtener la ubicación real")
+            messagebox.showerror("Error", "No se pudo obtener la ubicación real")  # Si no se puede obtener la ubicación, muestra un mensaje de error.
     except Exception as e:
-        messagebox.showerror("Error", f"No se pudo obtener la ubicación: {e}")
+        messagebox.showerror("Error", f"No se pudo obtener la ubicación: {e}")  # Si ocurre algún error en el proceso, muestra un mensaje de error.
 
-# Crear la ventana principal
-mapa_ventana = tk.Tk()
-mapa_ventana.title("Mapa Genérico de Búsqueda")
-mapa_ventana.geometry("800x600")
+mapa_ventana = tk.Tk()  # Crea la ventana principal de la aplicación utilizando tkinter.
+mapa_ventana.title("Mapa Genérico de Búsqueda")  # Establece el título de la ventana como "Mapa Genérico de Búsqueda".
+mapa_ventana.geometry("800x600")  # Define el tamaño de la ventana en píxeles (ancho x alto).
 
-# Entrada de búsqueda de coordenadas
-entrada_busqueda = tk.Entry(mapa_ventana, width=50, font=("Arial", 12))
-entrada_busqueda.pack(pady=10)
 
-# Botón para buscar coordenadas
+entrada_busqueda = tk.Entry(mapa_ventana, width=50, font=("Arial", 12))  # Crea un campo de entrada de texto para que el usuario ingrese las coordenadas.
+entrada_busqueda.pack(pady=10)  # Añade el campo de entrada a la ventana y le da un margen vertical de 10 píxeles.
+
+
 boton_buscar = tk.Button(
-    mapa_ventana, 
-    text="Buscar ubicación por coordenadas", 
-    font=("Arial", 12), 
-    command=buscar_ubicacion
+    mapa_ventana,  # Botón que se crea dentro de la ventana principal.
+    text="Buscar ubicación por coordenadas",  # Texto que aparecerá en el botón.
+    font=("Arial", 12),  # Define el tipo de fuente y tamaño del texto del botón.
+    command=buscar_ubicacion  # Define la función que se ejecutará cuando el usuario presione el botón.
 )
-boton_buscar.pack(pady=10)
+boton_buscar.pack(pady=10)  # Añade el botón a la ventana y le da un margen vertical de 10 píxeles.
 
-# Mapa de Leaflet widget
-map_widget = TkinterMapView(mapa_ventana, width=780, height=450, corner_radius=0)
-map_widget.pack(pady=10)
+
+map_widget = TkinterMapView(mapa_ventana, width=780, height=450, corner_radius=0)  # Crea el widget de mapa con un tamaño específico.
+map_widget.pack(pady=10)  # Añade el mapa a la ventana con un margen vertical de 10 píxeles.
+
 
 # Configurar punto inicial del mapa con coordenadas de Madrid
 map_widget.set_position(40.4168, -3.7038)
 map_widget.set_zoom(10)
 
-# Botón para mostrar ubicación inicial
 boton_ubicacion = tk.Button(
-    mapa_ventana, 
-    text="Los Madriles", 
-    font=("Arial", 12), 
-    command=mostrar_ubicacion
+    mapa_ventana,  # Botón que se crea dentro de la ventana principal.
+    text="Los Madriles",  # Texto que aparecerá en el botón.
+    font=("Arial", 12),  # Define el tipo de fuente y tamaño del texto del botón.
+    command=mostrar_ubicacion  # Define la función que se ejecutará cuando el usuario presione el botón.
 )
-boton_ubicacion.pack(side="left", padx=5, pady=5)
+boton_ubicacion.pack(side="left", padx=5, pady=5)  # Añade el botón a la ventana, alineado a la izquierda y con márgenes laterales.
 
-# Botón para mostrar la ubicación real
+
 boton_ubicacion_real = tk.Button(
-    mapa_ventana, 
-    text="Ubicación de mi IP", 
-    font=("Arial", 12), 
-    command=mostrar_ubicacion_real
+    mapa_ventana,  # Botón que se crea dentro de la ventana principal.
+    text="Ubicación de mi IP",  # Texto que aparecerá en el botón.
+    font=("Arial", 12),  # Define el tipo de fuente y tamaño del texto del botón.
+    command=mostrar_ubicacion_real  # Define la función que se ejecutará cuando el usuario presione el botón.
 )
-boton_ubicacion_real.pack(side="left", padx=5, pady=5)
+boton_ubicacion_real.pack(side="left", padx=5, pady=5)  # Añade el botón a la ventana, alineado a la izquierda y con márgenes laterales.
 
-# Iniciar el bucle principal
-mapa_ventana.mainloop()
+
+mapa_ventana.mainloop()  # Inicia el bucle principal de la aplicación, que mantiene la ventana abierta y en funcionamiento hasta que el usuario la cierre.
