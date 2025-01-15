@@ -1,5 +1,7 @@
 # Mapa Genérico de Búsqueda
 
+![mapa-generico](https://github.com/user-attachments/assets/00a9c6d9-1cf0-446f-ad7f-644274895682)
+
 Este proyecto permite mostrar y buscar ubicaciones en un mapa interactivo utilizando **Tkinter** y **TkinterMapView**. Los usuarios pueden buscar ubicaciones por coordenadas geográficas, por dirección (texto de una ubicación) o visualizar la ubicación actual basada en su dirección IP.
 
 ## Características
