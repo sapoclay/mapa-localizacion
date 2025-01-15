@@ -39,9 +39,9 @@ Notas:
 
 # Importar tkinter
 import tkinter as tk
-from tkintermapview import TkinterMapView  # pip install tkintermapview
+from tkintermapview import TkinterMapView  
 from tkinter import messagebox
-import geocoder  # pip install geocoder
+import geocoder  
 
 # Función para mostrar la ubicación inicial con un marcador
 def mostrar_ubicacion():
